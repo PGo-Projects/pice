@@ -33,12 +33,6 @@ func init() {
 }
 
 func pice(cmd *cobra.Command, args []string) {
-	if len(args) == 0 {
-		if err := cmd.Help(); err != nil {
-			os.Exit(1)
-		}
-		os.Exit(0)
-	}
 	options := picegen.Options{
 		UseCaps:          useCaps,
 		UseNumbers:       useNumbers,
@@ -48,12 +42,13 @@ func pice(cmd *cobra.Command, args []string) {
 		output.Errorln(err)
 		os.Exit(1)
 	}
-	result, err := picegen.Generate(wordCount, options)
+	components, passphrase, err := picegen.Generate(wordCount, options)
 	if err != nil {
 		output.Errorln(err)
 		os.Exit(1)
 	}
-	output.Success(fmt.Sprintf("Your passphrase is: %s", result))
+	output.Successln(fmt.Sprintf("Your passphrase is: %s", passphrase))
+	output.Successln(fmt.Sprintf("The components are: %s", components))
 }
 
 func Execute() {
